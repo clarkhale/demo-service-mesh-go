@@ -1,0 +1,11 @@
+FROM ubi8/ubi
+
+
+COPY ./main /main
+
+RUN chmod 0755 /main
+
+USER 1001
+
+CMD ["/main"]
+
