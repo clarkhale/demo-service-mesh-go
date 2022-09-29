@@ -62,13 +62,17 @@ func getCount(c *gin.Context) {
 func main() {
 
 	port := flag.Int("port", 8080, "Set Port Number")
-	nextHop = flag.String("nexthop", "localhost:8081", "Specify Next Hop")
+	//nextHop = flag.String("nexthop", "localhost:8081", "Specify Next Hop")
 
 	flag.Parse()
 
 	bindHost := ":" + strconv.Itoa(*port)
 
 	hostname = os.Getenv("HOSTNAME")
+
+	nextHopEnv := os.Getenv("NEXT_HOP")
+
+	nextHop = &nextHopEnv
 
 	router := gin.Default()
 
