@@ -12,4 +12,4 @@ RUN go build -o /main
 
 EXPOSE 8081
 
-CMD [ "/main" , "-p=8080"]
+CMD [ "/main" ]
