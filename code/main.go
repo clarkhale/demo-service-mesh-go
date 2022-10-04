@@ -15,11 +15,13 @@ import (
 var count int = 0
 var hostname string
 var nextHop *string = nil
+var version *string = nil
 var errCount = 0
 
 type ExampleResponse struct {
 	Count           int              `json:"count"`
 	Hostname        string           `json:"hostname"`
+	Version         string           `json:"version"`
 	DownStreamError bool             `json:"downstreamerror"`
 	NestedResponse  *ExampleResponse `json:"nestedResponse"`
 }
@@ -29,6 +31,7 @@ func getCount(c *gin.Context) {
 
 	response := ExampleResponse{Count: count,
 		Hostname:        hostname,
+		Version:         *version,
 		DownStreamError: false,
 		NestedResponse:  nil}
 
@@ -73,6 +76,10 @@ func main() {
 	nextHopEnv := os.Getenv("NEXT_HOP")
 
 	nextHop = &nextHopEnv
+
+	versionEnv := os.Getenv("APP_VERSION")
+
+	version = &versionEnv
 
 	router := gin.Default()
 
