@@ -16,11 +16,13 @@ var count int = 0
 var hostname string
 var nextHop *string = nil
 var version *string = nil
+var side *string = nil
 var errCount = 0
 
 type ExampleResponse struct {
 	Count           int              `json:"count"`
 	Hostname        string           `json:"hostname"`
+	Side            string           `json:"side"`
 	Version         string           `json:"version"`
 	DownStreamError bool             `json:"downstreamerror"`
 	NestedResponse  *ExampleResponse `json:"nestedResponse"`
@@ -31,6 +33,7 @@ func getCount(c *gin.Context) {
 
 	response := ExampleResponse{Count: count,
 		Hostname:        hostname,
+		Side:            *side,
 		Version:         *version,
 		DownStreamError: false,
 		NestedResponse:  nil}
@@ -80,6 +83,10 @@ func main() {
 	versionEnv := os.Getenv("APP_VERSION")
 
 	version = &versionEnv
+
+	sideEnv := os.Getenv("APP_SIDE")
+
+	side = &sideEnv
 
 	router := gin.Default()
 
