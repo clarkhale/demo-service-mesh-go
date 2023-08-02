@@ -1,0 +1,32 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: smgoapp
+    app.kubernetes.io/component: smgoapp
+    app.kubernetes.io/instance: smgoapp
+    app.kubernetes.io/name: smgoapp
+    app.kubernetes.io/part-of: smgoapp
+  name: smgoapp
+  namespace: gotest
+spec:
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: smgoapp:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: /code
+    git:
+      uri: https://code.private.opequon.net/opequon_appdev/service-mesh-go.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - type: ConfigChange

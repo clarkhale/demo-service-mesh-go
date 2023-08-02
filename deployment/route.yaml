@@ -1,0 +1,22 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: smgoapp
+    app.kubernetes.io/component: smgoapp
+    app.kubernetes.io/instance: smgoapp
+    app.kubernetes.io/name: smgoapp
+    app.kubernetes.io/part-of: smgoapp
+  name: smgoapp
+  namespace: gotest
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: smgoapp
+    weight: 100
+  wildcardPolicy: None
