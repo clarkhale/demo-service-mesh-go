@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -40,6 +41,8 @@ func getCount(c *gin.Context) {
 
 	if *nextHop != "" {
 		nextHopResponse, err := http.Get("http://" + *nextHop)
+		fmt.Printf("Curling %s\n", *nextHop);
+		defer nextHopResponse.Body.Close()
 
 		if err != nil || nextHopResponse.Body == nil {
 			errCount++
