@@ -19,6 +19,7 @@ var nextHop *string = nil
 var version *string = nil
 var side *string = nil
 var errCount = 0
+var *httpClient *http.Client = nil
 
 type ExampleResponse struct {
 	Count           int              `json:"count"`
@@ -27,6 +28,17 @@ type ExampleResponse struct {
 	Version         string           `json:"version"`
 	DownStreamError bool             `json:"downstreamerror"`
 	NestedResponse  *ExampleResponse `json:"nestedResponse"`
+}
+
+func httpClient() *http.Client {
+    client := &http.Client{
+        Transport: &http.Transport{
+        	DisableKeepAlives: true,
+        },
+        Timeout: 10 * time.Second,
+    }
+
+    return client
 }
 
 func getCount(c *gin.Context) {
@@ -39,10 +51,13 @@ func getCount(c *gin.Context) {
 		DownStreamError: false,
 		NestedResponse:  nil}
 
+	if(httpClient == nil) {
+		client := httpClient()
+	}
+
 	if *nextHop != "" {
-		nextHopResponse, err := http.Get("http://" + *nextHop)
+		nextHopResponse, err := client.Get("http://" + *nextHop)
 		fmt.Printf("Curling %s\n", *nextHop);
-		defer nextHopResponse.Body.Close()
 
 		if err != nil || nextHopResponse.Body == nil {
 			errCount++
@@ -64,6 +79,7 @@ func getCount(c *gin.Context) {
 				}
 			}
 		}
+		nextHopResponse.Body.Close()
 	}
 	c.IndentedJSON(http.StatusOK, response)
 }
