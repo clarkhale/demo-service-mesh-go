@@ -19,7 +19,7 @@ var nextHop *string = nil
 var version *string = nil
 var side *string = nil
 var errCount = 0
-var *httpClient *http.Client = nil
+var httpClient *http.Client = nil
 
 type ExampleResponse struct {
 	Count           int              `json:"count"`
